@@ -1,0 +1,24 @@
+{
+  "name": "list",
+  "authors": [
+    "Ichisen <alfironius@gmail.com>"
+  ],
+  "description": "list",
+  "main": "index.html",
+  "moduleType": [],
+  "keywords": [
+    "list"
+  ],
+  "license": "none",
+  "homepage": "none",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jQuery": "~2.2.0"
+  }
+}
