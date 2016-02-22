@@ -10,8 +10,8 @@ NS.Factory = function(comConstructors, tplEngine) {
 };
 
 NS.Factory.prototype._getComponentConstructorForName = function(name) {
-    for(var i = 0; i < this.comConstructors_.length; i++ ) {
-        if( this.comConstructors_[i].name == name ) return this.comConstructors_[i]
+    for(var x in this.comConstructors_) {
+        if( this.comConstructors_[x].name == name ) return this.comConstructors_[x]
     }
 
     return undefined;
