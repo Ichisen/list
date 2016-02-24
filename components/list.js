@@ -33,18 +33,21 @@ NS.List = {
     },
     bodyTemplate: function() {
         return {
+            id: 'listBody',
             css:'',
             html:''
         }
     },
     headerTemplate: function() {
         return {
+            id: 'listHeader',
             css:'',
             html:''
         }
     },
     rowTemplate: function() {
         return {
+            id: 'listRow',
             css:'',
             html:''
         }
@@ -67,7 +70,7 @@ NS.List.Instance = function(config) {
     this.disabled_ = false;
 
     this.tplEngine_ = config.tplEngine;
-    this.domContainer_ = config.domContainer;
+    this.$domContainer_ = $(config.domContainer);
 
     this.headerTemplate_ = config.headerTemplate;
     this.bodyTemplate_ = config.headerTemplate;
@@ -97,8 +100,30 @@ NS.List.Instance = function(config) {
 };
 
 NS.List.Instance.prototype.onRender = function() {
+    var bodyParams = [];
+    var rowsHTML = '';
+    var rowsData = this.getRowsData_();
+
+    for(var i=0; i < rowsData.length; i++) {
+        rowsHTML = rowsHTML + this.tplEngine_.build(this.rowTemplate_(),[rowsData[i]],false)
+    }
+    bodyParams.push({ path: 'rows', value: rowsHTML});
+    bodyParams.push({
+        path: 'header',
+        value: this.tplEngine_.build(this.headerTemplate_(),[],false)
+    });
+
+    var $body = this.tplEngine_.build(this.bodyTemplate_(),bodyParams, true);
+
+    this.$domContainer_.append( $body );
 
     this.status_ = 'rendered';
 };
 
-NS.List.Instance.prototype.setSource
+NS.List.Instance.prototype.setSource = function(source) {
+    //здесь можно организовать логику по поддержке нескольких источников
+};
+
+NS.List.Instance.prototype.getRowsData_ = function() {
+
+};
