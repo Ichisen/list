@@ -35,28 +35,28 @@ NS.List = {
         return {
             id: 'listBody',
             css:'',
-            html:''
+            html:'<div class="list"> {header} <div class="rows"> {rows} </div> </div>'
         }
     },
     headerTemplate: function() {
         return {
             id: 'listHeader',
             css:'',
-            html:''
+            html:'<div class="header"></div>'
         }
     },
     rowTemplate: function() {
         return {
             id: 'listRow',
             css:'',
-            html:''
+            html:'<div class="row">{data}</div>'
         }
     },
     groupTemplate: function() {
         return {
             id: 'listGroup',
             css:'',
-            html:''
+            html:'<div class="group"><div class="group-name">{name}</div><div class="group-rows">{rows}</div></div>'
         }
     }
 };
@@ -176,14 +176,17 @@ NS.List.Instance.prototype.getSource = function() {
     }
 };
 
-NS.List.Instance.prototype.getRowsData_ = function() {
-
-};
-
-NS.List.Instance.prototype.setFilter = function() { };
-
 NS.List.Instance.prototype.setGroup = function(groupConf) {
     this.groupConfig_ = groupConf;
 
     this.groupConfig_ && this.groupConfig_.groupingFunc.call(this,this.getSource())
 };
+
+NS.List.Instance.prototype.setVisible = function(visible) {
+    this.visible_ = visible;
+};
+
+NS.List.Instance.prototype.getRowsData_ = function() { };
+NS.List.Instance.prototype.setFilter = function() { };
+NS.List.Instance.prototype.setPagination = function() { };
+NS.List.Instance.prototype.setSelectRow = function() { };

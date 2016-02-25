@@ -37,7 +37,8 @@
     <script src="components/list.js" type="text/javascript"></script>
 
     <script type="text/javascript">
-        (function(NS){
+        $(function(){
+            var NS = window;
             var FactoryInstance = new NS.Factory(NS.Components, NS.Templates.HTML);
 
             var dataArray = [{
@@ -87,44 +88,47 @@
                 surname: 'Шмид'
             }];
 
+            var oneGroupFunc = function(sourceArray) {
+                var item;
+                var firstLetter;
+                var firstLetters = [];
+                var firstLettersObjects = {};
+
+                for(var i=0; i < sourceArray.length; i++){
+                    item = sourceArray[i];
+                    firstLetter = item.surname.charAt(0);
+                    if(firstLetters.indexOf( firstLetter ) == -1) {
+                        firstLetters.push( firstLetter )
+                    }
+
+                    if(!firstLettersObjects[firstLetter]) {
+                        firstLettersObjects[firstLetter] = {
+                            groupName: firstLetter,
+                            data: []
+                        }
+                    }
+
+                    firstLettersObjects[firstLetter].data.push(item.surname+' '+item.name)
+                }
+
+                this.groupArray_ = firstLetters;
+                this.groupData_ = firstLettersObjects;
+            };
+
             var listOne = FactoryInstance.create('List',{
                 source: dataArray,
                 group: {
-                    groupingFunc: function(sourceArray) {
-                        var item;
-                        var firstLetter;
-                        var firstLetters = [];
-                        var firstLettersObjects = {};
-
-                        for(var i=0; i < sourceArray.length; i++){
-                            item = sourceArray[i];
-                            firstLetter = item.surname.charAt(0);
-                            if(firstLetters.indexOf( firstLetter ) == -1) {
-                                firstLetters.push( firstLetter )
-                            }
-
-                            if(!firstLettersObjects[firstLetter]) {
-                                firstLettersObjects[firstLetter] = {
-                                    groupName: firstLetter,
-                                    data: []
-                                }
-                            }
-
-                            firstLettersObjects[firstLetter].data.push(item.surname+' '+item.name)
-                        }
-
-                        this.groupArray_ = firstLetters;
-                        this.groupData_ = firstLettersObjects;
-                    },
+                    groupingFunc: oneGroupFunc,
                     asc: true
                 },
+                visible: true,
                 filter: null,
                 pagination: null
             });
             var listTwo = FactoryInstance.create('List',{});
             var listThree = FactoryInstance.create('List',{});
 
-        })(window);
+        });
     </script>
 </head>
 <body>

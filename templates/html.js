@@ -17,7 +17,7 @@ NS.HTML = {
         var html = template.html;
 
         for(var i=0; i < data.length; i++) {
-            html = html.replace( data[i].path, data[i].value )
+            html = html.replace( '{'+data[i].path+'}', data[i].value )
         }
 
         return htmlFlag ? $(html) : html;
