@@ -51,6 +51,13 @@ NS.List = {
             css:'',
             html:''
         }
+    },
+    groupTemplate: function() {
+        return {
+            id: 'listGroup',
+            css:'',
+            html:''
+        }
     }
 };
 
@@ -73,6 +80,7 @@ NS.List.Instance = function(config) {
     this.$domContainer_ = $(config.domContainer);
 
     this.headerTemplate_ = config.headerTemplate;
+    this.groupTemplate_ = config.groupTemplate;
     this.bodyTemplate_ = config.headerTemplate;
     this.rowTemplate_ = config.rowTemplate;
 
@@ -80,7 +88,7 @@ NS.List.Instance = function(config) {
 
     this.setFilter(config.filter);
     this.setGroup(config.group);
-    this.setPaging(config.paging);
+    this.setPagination(config.pagination);
 
     this.setSelectRow(config.selectRow);
 
@@ -102,11 +110,14 @@ NS.List.Instance = function(config) {
 NS.List.Instance.prototype.onRender = function() {
     var bodyParams = [];
     var rowsHTML = '';
-    var rowsData = this.getRowsData_();
 
-    for(var i=0; i < rowsData.length; i++) {
-        rowsHTML = rowsHTML + this.tplEngine_.build(this.rowTemplate_(),[rowsData[i]],false)
+    if(this.groupConfig_) {
+        rowsHTML = this.getGroupHTML();
+    } else {
+        rowsHTML = this.getRowsHTML( this.getRowsData_() );
     }
+
+
     bodyParams.push({ path: 'rows', value: rowsHTML});
     bodyParams.push({
         path: 'header',
@@ -120,10 +131,59 @@ NS.List.Instance.prototype.onRender = function() {
     this.status_ = 'rendered';
 };
 
+NS.List.Instance.prototype.getRowsHTML = function(rowsData) {
+    var rowsHTML = '';
+    for(var i=0; i < rowsData.length; i++) {
+        rowsHTML = rowsHTML + this.tplEngine_.build(this.rowTemplate_(),[{rowContent:rowsData[i]}],false)
+    }
+
+    return rowsHTML;
+};
+
+NS.List.Instance.prototype.getGroupHTML = function() {
+    var HTML = '';
+    var selfArray = this.groupConfig_.asc ? this.groupArray_.sort() : this.groupArray_.sort();
+
+    for(var i=0; i < selfArray.length; i++){
+        HTML = HTML + this.tplEngine_.build(this.groupTemplate_(),[{
+                name: selfArray[i],
+                row: this.getRowsHTML( this.groupData_[selfArray[i]].data )
+            }],false)
+    }
+};
+
 NS.List.Instance.prototype.setSource = function(source) {
-    //здесь можно организовать логику по поддержке нескольких источников
+    if(source instanceof Array) {
+        this.setSourceArray(source);
+    } else {
+        //здесь можно организовать логику по поддержке нескольких источников
+    }
+};
+
+NS.List.Instance.prototype.setSourceArray = function(sourceArray) {
+    this.sourceArray_ = [];
+
+    for(var i=0; i < sourceArray.length; i++){
+        this.sourceArray_.push(sourceArray[i])
+    }
+};
+
+NS.List.Instance.prototype.getSource = function() {
+    if(this.sourceArray_ && this.sourceArray_.length) {
+        return this.sourceArray_
+    } else {
+        //здесь можно организовать логику по поддержке нескольких источников
+    }
 };
 
 NS.List.Instance.prototype.getRowsData_ = function() {
 
+};
+
+NS.List.Instance.prototype.setFilter = function() { };
+
+NS.List.Instance.prototype.setGroup = function(groupConf) {
+    this.groupConfig_ = groupConf;
+
+    this.groupConfig_ && this.groupConfig_.groupingFunc.call(this,this.getSource())
 };

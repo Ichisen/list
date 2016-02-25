@@ -40,7 +40,87 @@
         (function(NS){
             var FactoryInstance = new NS.Factory(NS.Components, NS.Templates.HTML);
 
-            var listOne = FactoryInstance.create('List',{});
+            var dataArray = [{
+                name: 'Егор',
+                surname: 'Гончаров'
+            },{
+                name: 'Виктор',
+                surname: 'Гончаров'
+            },{
+                name: 'Илья',
+                surname: 'Смирнов'
+            },{
+                name: 'Виктория',
+                surname: 'Китайцева'
+            },{
+                name: 'Алёна',
+                surname: 'Сурначёва'
+            },{
+                name: 'Михаил',
+                surname: 'Глушко'
+            },{
+                name: 'Семён',
+                surname: 'Слепнев'
+            },{
+                name: 'Игорь',
+                surname: 'Громов'
+            },{
+                name: 'Денис',
+                surname: 'Маслаков'
+            },{
+                name: 'Вячеслав',
+                surname: 'Морозов'
+            },{
+                name: 'Александер',
+                surname: 'Шадура'
+            },{
+                name: 'Игнат',
+                surname: 'Румянцев'
+            },{
+                name: 'Галина',
+                surname: 'Макарова'
+            },{
+                name: 'Екатерина',
+                surname: 'Епина'
+            },{
+                name: 'Елена',
+                surname: 'Шмид'
+            }];
+
+            var listOne = FactoryInstance.create('List',{
+                source: dataArray,
+                group: {
+                    groupingFunc: function(sourceArray) {
+                        var item;
+                        var firstLetter;
+                        var firstLetters = [];
+                        var firstLettersObjects = {};
+
+                        for(var i=0; i < sourceArray.length; i++){
+                            item = sourceArray[i];
+                            firstLetter = item.surname.charAt(0);
+                            if(firstLetters.indexOf( firstLetter ) == -1) {
+                                firstLetters.push( firstLetter )
+                            }
+
+                            if(!firstLettersObjects[firstLetter]) {
+                                firstLettersObjects[firstLetter] = {
+                                    groupName: firstLetter,
+                                    data: []
+                                }
+                            }
+
+                            firstLettersObjects[firstLetter].data.push(item.surname+' '+item.name)
+                        }
+
+                        this.groupArray_ = firstLetters;
+                        this.groupData_ = firstLettersObjects;
+                    },
+                    asc: true
+                },
+                filter: null,
+                pagination: null
+            });
             var listTwo = FactoryInstance.create('List',{});
             var listThree = FactoryInstance.create('List',{});
 
