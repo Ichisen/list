@@ -95,6 +95,7 @@ NS.List = {
                     'text-shadow: 0 1px #646A6E;' +
                     'position: absolute;' +
                     'top: 0px;'+
+                    'width: calc(100% - 12px);'+
                 '}' +
             '',
             html:'<div class="group"><div class="group-name">{name}</div><div class="group-rows">{rows}</div></div>'
@@ -236,9 +237,6 @@ NS.List.Instance.prototype.onEvents = function() {
     this.$groups_ = this.$domContainer_.find('.group');
     this.$headerFirst_ = this.$domContainer_.find('.header.group-name.first');
     this.$list_.scroll(this.scrollPosition.bind(this));
-    this.$groups_.each(function(index, group){
-        $(group).find('.group-name').width(group.offsetWidth-12)
-    });
 };
 
 NS.List.Instance.prototype.scrollPosition = function() {
@@ -268,7 +266,6 @@ NS.List.Instance.prototype.scrollPosition = function() {
     }
 
     this.$headerFirst_.width(groupOnScroll.offsetWidth-12);
-    $groupName.width(groupOnScroll.offsetWidth-12);
     this.$headerFirst_.text( $(groupOnScroll).find('.group-name').text() );
 };
 
