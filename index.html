@@ -162,7 +162,18 @@
                 },
                 visible: true,
                 filter: null,
-                pagination: null
+                pagination: null,
+                groupTemplate: function() {
+                    return {
+                        id: 'listGroupUp',
+                        css: '' +
+                            '.group-rowsUp {' +
+                                'background: #2566CC;' +
+                            '}' +
+                        '',
+                        html: '<div class="group"><div class="group-name">{name}</div><div class="group-rows group-rowsUp">{rows}</div></div>'
+                    }
+                }
             });
 
         });
