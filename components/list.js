@@ -25,7 +25,6 @@ NS.List = {
             toolTip: config.toolTip,
             editable: config.editable,
             disabled: config.disabled,
-            readOnly: config.readOnly,
 
             source: config.source,
             selectRow: config.selectRow,
@@ -115,7 +114,6 @@ NS.List.Instance = function(config) {
 
     this.visible_ = false;
     this.editable_ = false;
-    this.readOnly_ = false;
     this.disabled_ = false;
 
     this.tplEngine_ = config.tplEngine;
@@ -137,7 +135,6 @@ NS.List.Instance = function(config) {
     this.setVisible(config.visible);
     this.setToolTip(config.toolTip);
     this.setEditable(config.editable);
-    this.setReadOnly(config.readOnly);
 
     config.disabled && this.disable();
 
@@ -281,4 +278,3 @@ NS.List.Instance.prototype.setPagination = function() { };
 NS.List.Instance.prototype.setSelectRow = function() { };
 NS.List.Instance.prototype.setToolTip = function() { };
 NS.List.Instance.prototype.setEditable = function() { };
-NS.List.Instance.prototype.setReadOnly = function() { };
