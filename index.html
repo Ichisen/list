@@ -116,6 +116,7 @@
             };
 
             var listOne = FactoryInstance.create('List',{
+                domContainer: $('#listOne'),
                 source: dataArray,
                 group: {
                     groupingFunc: oneGroupFunc,
@@ -125,8 +126,44 @@
                 filter: null,
                 pagination: null
             });
-            var listTwo = FactoryInstance.create('List',{});
-            var listThree = FactoryInstance.create('List',{});
+
+            var twoGroupFunc = function(sourceArray) {
+                var item;
+                var firstLetter;
+                var firstLetters = [];
+                var firstLettersObjects = {};
+
+                for(var i=0; i < sourceArray.length; i++){
+                    item = sourceArray[i];
+                    firstLetter = item.name.charAt(0);
+                    if(firstLetters.indexOf( firstLetter ) == -1) {
+                        firstLetters.push( firstLetter )
+                    }
+
+                    if(!firstLettersObjects[firstLetter]) {
+                        firstLettersObjects[firstLetter] = {
+                            groupName: firstLetter,
+                            data: []
+                        }
+                    }
+
+                    firstLettersObjects[firstLetter].data.push(item.name+' '+item.surname)
+                }
+
+                this.groupArray_ = firstLetters;
+                this.groupData_ = firstLettersObjects;
+            };
+            var listTwo = FactoryInstance.create('List',{
+                domContainer: $('#listTwo'),
+                source: dataArray,
+                group: {
+                    groupingFunc: twoGroupFunc,
+                    asc: true
+                },
+                visible: true,
+                filter: null,
+                pagination: null
+            });
 
         });
     </script>
